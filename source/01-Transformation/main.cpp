@@ -20,11 +20,11 @@ int main(){
 
 	float rad = DEG2RAD(45.0f);
 
-	Vector3f v(1, 0, 1.0f);
+	Vector3f v(2, 1, 1.0f);
 
 	Matrix3f m;
-	m << cos(rad), -sin(rad), 0,
-		 sin(rad),  cos(rad), 0,
+	m << cos(rad), -sin(rad), 1,
+		 sin(rad),  cos(rad), 2,
 		        0,         0, 1;
 
 	Vector3f rv = m * v;
