@@ -4,4 +4,5 @@ project(GAMES101)
 
 set(CMAKE_CXX_STANDARD 11)
 add_subdirectory(thrid_party)
-add_subdirectory(source/01-Transformation)
+add_subdirectory(source/00-Transformation)
+add_subdirectory(source/01-Rasterizer)

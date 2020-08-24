@@ -24,8 +24,8 @@ int main(){
 
 	Matrix3f m;
 	m << cos(rad), -sin(rad), 1,
-		 sin(rad),  cos(rad), 2,
-		        0,         0, 1;
+		sin(rad), cos(rad), 2,
+		0, 0, 1;
 
 	Vector3f rv = m * v;
 
