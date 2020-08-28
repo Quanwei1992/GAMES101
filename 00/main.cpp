@@ -20,16 +20,6 @@ int main()
          0,0,1;
     
     Eigen::Vector3f P2 = M * P;
-    //std::cout<<P2<<std::endl;
-
-
-    Eigen::Vector3f a(0,1,14);
-    Eigen::Vector3f b(1,0,0);
-    
-
-    auto d = b.cross(a);
-
-    std::cout<<d.z()<<std::endl;
-
+    std::cout<<P2<<std::endl;
     return 0;
 }

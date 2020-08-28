@@ -1,6 +1,7 @@
 {
     "git.ignoreLimitWarning": true,
     "files.associations": {
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "eigen": "cpp"
     }
 }
