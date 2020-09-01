@@ -5,7 +5,7 @@
 #ifndef RASTERIZER_TEXTURE_H
 #define RASTERIZER_TEXTURE_H
 #include "global.hpp"
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include <opencv2/opencv.hpp>
 class Texture{
 private:

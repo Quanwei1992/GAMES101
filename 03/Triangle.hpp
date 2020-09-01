@@ -5,7 +5,7 @@
 #ifndef RASTERIZER_TRIANGLE_H
 #define RASTERIZER_TRIANGLE_H
 
-#include <eigen3/Eigen/Eigen>
+#include <Eigen/Eigen>
 #include "Texture.hpp"
 
 using namespace Eigen;
