@@ -339,31 +339,7 @@ Eigen::Vector3f bump_fragment_shader(const fragment_shader_payload& payload)
     Vector3f ln(-dU,-dV,1);
     Vector3f n = (TBN * ln).normalized();
 
-    Eigen::Vector3f result_color = {0, 0, 0};
-    Vector3f view_dir = (eye_pos - point).normalized();
-    for (auto& light : lights)
-    {
-        // TODO: For each light source in the code, calculate what the *ambient*, *diffuse*, and *specular* 
-        // components are. Then, accumulate that result on the *result_color* object.
-        float rr =  ( light.position -point).squaredNorm();
-        Vector3f diffsue(0,0,0);
-        Vector3f specular(0,0,0);
-        Vector3f ambient(0,0,0);
-        Vector3f light_dir =  (light.position -point).normalized();
-        
-        for (size_t i = 0; i < 3; i++)
-        {
-            Vector3f h = (view_dir + light_dir).normalized(); // half
-            float intensity = light.intensity[i]/rr;
-            diffsue[i] = kd[i] * intensity * std::max(0.0f,n.dot(light_dir));
-            specular[i] = ks[i] * intensity * std::pow(std::max(0.0f,n.dot(h)),p);
-            ambient[i] = amb_light_intensity[i] * ka[i];
-        }
-        result_color += diffsue;     
-        result_color += specular;   
-        result_color += ambient;
-    }
-
+    Eigen::Vector3f result_color = n;
     return result_color * 255.f;
 }
 
