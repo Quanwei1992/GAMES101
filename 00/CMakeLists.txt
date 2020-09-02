@@ -1,6 +1,5 @@
-cmake_minimum_required (VERSION 2.8.11)
+set(TARGET_NAME 00)
 
-
-add_executable (00 main.cpp)
 find_package(Eigen3 REQUIRED)
-target_link_libraries(00 PRIVATE Eigen3::Eigen)
+add_executable (${TARGET_NAME} main.cpp)
+target_link_libraries(${TARGET_NAME} PRIVATE Eigen3::Eigen)

@@ -278,7 +278,6 @@ Eigen::Vector3f displacement_fragment_shader(const fragment_shader_payload& payl
     }
 
     return result_color * 255.f;
-    return result_color * 255.f;
 }
 
 
@@ -377,10 +376,10 @@ int main(int argc, const char** argv)
 
     std::string filename = "output.png";
     objl::Loader Loader;
-    std::string obj_path = "../models/spot/";
+    std::string obj_path = "./models/spot/";
 
     // Load .obj File
-    bool loadout = Loader.LoadFile("../models/spot/spot_triangulated_good.obj");
+    bool loadout = Loader.LoadFile("./models/spot/spot_triangulated_good.obj");
     for(auto mesh:Loader.LoadedMeshes)
     {
         for(int i=0;i<mesh.Vertices.size();i+=3)
