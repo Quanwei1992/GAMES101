@@ -2,15 +2,15 @@
 GAMES101: 现代计算机图形学入门 作业
 
 
-## 作业 1 旋转与投影
+### 作业 1 旋转与投影
 
 ![01-00](/images/01-00.png)
 
-## 作业 2 Triangles and Z-buffering
+### 作业 2 Triangles and Z-buffering
 
 ![02-00](/images/02-00.png)
 
-## 作业 3 Pipeline and Shading
+### 作业 3 Pipeline and Shading
 
 phong
 
@@ -33,6 +33,6 @@ displacement
 ![displacement](/images/03-04.png)
 
 
-## 作业 4 Bézier 曲线
+### 作业 4 Bézier 曲线
 
 ![](/images/04-00.png)
