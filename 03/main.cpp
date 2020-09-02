@@ -462,7 +462,7 @@ int main(int argc, const char** argv)
         return 0;
     }
 
-    while(key != 27)
+    while(key != 'q')
     {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
@@ -478,7 +478,7 @@ int main(int argc, const char** argv)
 
         cv::imshow("image", image);
         cv::imwrite(filename, image);
-        key = cv::waitKey(10);
+        key = cv::waitKey(0);
 
         if (key == 'a' )
         {
