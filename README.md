@@ -36,3 +36,7 @@ displacement
 ### 作业 4 Bézier 曲线
 
 ![](/images/04-00.png)
+
+
+### 作业5 光线与三角形相交
+![](/images/05-00.png)
