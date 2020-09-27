@@ -23,8 +23,11 @@ add_subdirectory(03)
 add_subdirectory(04)
 add_subdirectory(05)
 add_subdirectory(06)
+add_subdirectory(07)
 
 
-install(TARGETS 00 01 02 03 04 05 06 DESTINATION  output)
+
+install(TARGETS 00 01 02 03 04 05 06 07 DESTINATION  output)
 install(DIRECTORY 03/models DESTINATION output)
 install(DIRECTORY 06/models DESTINATION output)
+install(DIRECTORY 07/models DESTINATION output)
