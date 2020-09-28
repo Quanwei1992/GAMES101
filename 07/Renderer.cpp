@@ -26,13 +26,16 @@ void render_thread(std::vector<Vector3f>& fbuffer, const Scene& scene,int spp, i
 	{
 		for (int x = 0; x < scene.width; x++)
 		{
-			// generate primary ray direction
-			float _x = (2 * (x + 0.5) / (float)scene.width - 1) *
-				imageAspectRatio * scale;
-			float _y = (1 - 2 * (y + 0.5) / (float)scene.height) * scale;
-			Vector3f dir = normalize(Vector3f(-_x, _y, 1));
             int index = y * scene.width + x;
-			for (int k = 0; k < spp; k++) {               
+
+			for (int k = 0; k < spp; k++) {
+				float offset_x = get_random_float();
+				float offset_y = get_random_float();
+				// generate primary ray direction
+				float _x = (2 * (x + offset_x) / (float)scene.width - 1) *
+					imageAspectRatio * scale;
+				float _y = (1 - 2 * (y + offset_y) / (float)scene.height) * scale;
+				Vector3f dir = normalize(Vector3f(-_x, _y, 1));
                 fbuffer[index] += scene.castRay(Ray(eye_pos, dir), 0) / spp;
 			}
 		}

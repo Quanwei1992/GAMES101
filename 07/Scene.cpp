@@ -36,6 +36,8 @@ void Scene::sampleLight(Intersection &pos, float &pdf) const
     }
 }
 
+
+
 bool Scene::trace(
         const Ray &ray,
         const std::vector<Object*> &objects,
@@ -57,82 +59,43 @@ bool Scene::trace(
     return (*hitObject != nullptr);
 }
 
+
+Vector3f Scene::shade(Intersection& p, Vector3f wo) const
+{
+    if (p.m->hasEmission())
+    {
+        return p.m->getEmission();
+    }
+
+    Vector3f dir2NextObj = p.m->sample(wo, p.normal);
+    Intersection nextObj = intersect(Ray(p.coords, dir2NextObj));
+    if (!nextObj.happened)
+    {
+        return {};
+    }
+
+	float pdf = p.m->pdf(wo, dir2NextObj, p.normal);
+	Vector3f f_r = p.m->eval(wo, dir2NextObj, p.normal); //BRDF
+
+    if (nextObj.m->hasEmission())
+    {
+        return nextObj.m->getEmission() * f_r * dotProduct(p.normal, dir2NextObj) / pdf;
+    }
+    else {
+		if (get_random_float() > RussianRoulette)
+		{
+			return {};
+		}
+        return shade(nextObj, -dir2NextObj) * f_r * dotProduct(p.normal, dir2NextObj) / pdf / RussianRoulette;
+    }
+}
+
+
+
 // Implementation of Path Tracing
 Vector3f Scene::castRay(const Ray &ray, int depth) const
 {
-	Vector3f l_o;
-
-	const auto& interObj = intersect(ray);
+	auto interObj = intersect(ray);
 	if (!interObj.happened) return {};
-	if (interObj.m->hasEmission())
-	{
-		return l_o;
-	}
-
-
-	const Vector3f& obj2lightDir = interObj.m->sample(ray.direction, interObj.normal);
-
-	float pdf = interObj.m->pdf(ray.direction, obj2lightDir, interObj.normal);
-
-
-	const auto& interLight = intersect(Ray(interObj.coords, obj2lightDir));
-	if (!interLight.happened) return l_o;
-	if (!interLight.m->hasEmission()) return l_o;
-
-	
-	Vector3f f_r = interObj.m->eval(ray.direction, obj2lightDir, interObj.normal);
-	l_o = interLight.m->getEmission() * std::max(.0f,dotProduct(interObj.normal, obj2lightDir)) * f_r / pdf;
-	return l_o;
-
-
-
-		// TO DO Implement Path Tracing Algorithm here
-	//Intersection objectInter = intersect(ray);
-	//if (!objectInter.happened)
-	//	return {};
-
-	//if (objectInter.m->hasEmission())
-	//	return objectInter.m->getEmission();
-
-	//Vector3f L_dir;
-	//Intersection interLight;
-	//float pdf_light;
-	//sampleLight(interLight, pdf_light);
-
-	//Vector3f p = objectInter.coords;
-	//Vector3f x = interLight.coords;
-	//Vector3f obj2light = x - p;
-	//Vector3f obj2lightdir = obj2light.normalized();
-	//Vector3f N = objectInter.normal;
-	//Vector3f NN = interLight.normal;
-
-	//Intersection t = intersect(Ray(p, obj2lightdir));
-	//if (t.distance - obj2light.norm() > -EPSILON)
-	//{
-	//	float NL = dotProduct(obj2lightdir, N);
-	//	float NNL = dotProduct(-obj2lightdir, NN);
-	//	float r2 = dotProduct(obj2light, obj2light);
-	//	Vector3f eval = objectInter.m->eval(ray.direction, obj2lightdir, N);
-	//	L_dir = interLight.emit * eval * NL * NNL / (r2 * pdf_light);
-	//}
-
-
-	//if (get_random_float() > RussianRoulette)
-	//{
-	//	return L_dir;
-	//}
-
-	//Vector3f L_indir;
-	//Vector3f obj2nextobjdir = objectInter.m->sample(ray.direction, objectInter.normal).normalized();
-	//Ray obj2nextobjray = { objectInter.coords, obj2nextobjdir };
-	//Intersection nextobjInter = intersect(obj2nextobjray);
-	//if (nextobjInter.happened && !nextobjInter.m->hasEmission())
-	//{
-	//	float pdf = objectInter.m->pdf(ray.direction, obj2nextobjdir, objectInter.normal);
-	//	L_indir = castRay(obj2nextobjray, depth + 1) * objectInter.m->eval(ray.direction, obj2nextobjdir, objectInter.normal) * dotProduct(obj2nextobjdir, objectInter.normal) / pdf / RussianRoulette;
-	//}
-
-
-	//return L_dir + L_indir;
-
+    return shade(interObj,-ray.direction);
 }
