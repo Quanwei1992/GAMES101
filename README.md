@@ -53,3 +53,8 @@ displacement
 直接光照 1024 SPP
 
 ![](/images/07-00.png)
+
+
+全局光照 1024 SPP
+
+![](/images/07-01.png)
