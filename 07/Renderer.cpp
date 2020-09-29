@@ -21,22 +21,21 @@ void render_thread(std::vector<Vector3f>& fbuffer, const Scene& scene,int spp, i
 	float scale = tan(deg2rad(scene.fov * 0.5));
 	float imageAspectRatio = scene.width / (float)scene.height;
 	Vector3f eye_pos(278, 273, -800);
-
-	for (int y = y0; y < y1; y++)
+	for (int i = y0; i < y1; i++)
 	{
-		for (int x = 0; x < scene.width; x++)
+		for (int j = 0; j < scene.width; j++)
 		{
-            int index = y * scene.width + x;
-
-			for (int k = 0; k < spp; k++) {
-				float offset_x = get_random_float();
-				float offset_y = get_random_float();
-				// generate primary ray direction
-				float _x = (2 * (x + offset_x) / (float)scene.width - 1) *
+            int index = i * scene.width + j;
+			for (int k = 0; k < spp; k++)
+			{
+				float x = get_random_float();
+				float y = get_random_float();
+				float _x = (2 * (j + x) / (float)scene.width - 1) *
 					imageAspectRatio * scale;
-				float _y = (1 - 2 * (y + offset_y) / (float)scene.height) * scale;
+				float _y = (1 - 2 * (i + y) / (float)scene.height) * scale;
 				Vector3f dir = normalize(Vector3f(-_x, _y, 1));
-                fbuffer[index] += scene.castRay(Ray(eye_pos, dir), 0) / spp;
+				Ray ray = Ray(eye_pos, dir);
+				fbuffer[index] += scene.castRay(ray, 0) / spp;
 			}
 		}
 		g_mutex.lock();
@@ -49,7 +48,7 @@ void render_thread(std::vector<Vector3f>& fbuffer, const Scene& scene,int spp, i
 // The main render function. This where we iterate over all pixels in the image,
 // generate primary rays and cast these rays into the scene. The content of the
 // framebuffer is saved to a file.
-void Renderer::Render(const Scene& scene)
+void Renderer::Render(const Scene& scene,int spp)
 {
     std::vector<Vector3f> framebuffer(scene.width * scene.height);
 
@@ -61,8 +60,6 @@ void Renderer::Render(const Scene& scene)
 
     int m = 0;
     g_complateTotals = 0;
-    // change the spp value to change sample ammount
-    int spp = 1024;
 
     std::cout << "SPP: " << spp << "\n";
 
