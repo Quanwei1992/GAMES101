@@ -58,3 +58,8 @@ displacement
 全局光照 1024 SPP
 
 ![](/images/07-01.png)
+
+
+全局光照（优化光源采样） 1024 SPP
+
+![](/images/07-02.png)
