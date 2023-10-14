@@ -131,10 +131,10 @@ Eigen::Vector3f texture_fragment_shader(const fragment_shader_payload& payload)
         Vector3f specular(0,0,0);
         Vector3f ambient(0,0,0);
         Vector3f light_dir =  (light.position -point).normalized();
-        
+        Vector3f h = (view_dir + light_dir).normalized(); // half
         for (size_t i = 0; i < 3; i++)
         {
-            Vector3f h = (view_dir + light_dir).normalized(); // half
+            
             float intensity = light.intensity[i]/rr;
             diffsue[i] = kd[i] * intensity * std::max(0.0f,normal.dot(light_dir));
             specular[i] = ks[i] * intensity * std::pow(std::max(0.0f,normal.dot(h)),p);
@@ -178,10 +178,10 @@ Eigen::Vector3f phong_fragment_shader(const fragment_shader_payload& payload)
         Vector3f specular(0,0,0);
         Vector3f ambient(0,0,0);
         Vector3f light_dir =  (light.position -point).normalized();
-        
+        Vector3f h = (view_dir + light_dir).normalized(); // half
         for (size_t i = 0; i < 3; i++)
         {
-            Vector3f h = (view_dir + light_dir).normalized(); // half
+            
             float intensity = light.intensity[i]/rr;
             diffsue[i] = kd[i] * intensity * std::max(0.0f,normal.dot(light_dir));
             specular[i] = ks[i] * intensity * std::pow(std::max(0.0f,normal.dot(h)),p);
@@ -252,8 +252,9 @@ Eigen::Vector3f displacement_fragment_shader(const fragment_shader_payload& payl
     float dV = kh * kn * (payload.texture->getColor(u,v+1.0f/h).norm()-huv);
 
     Vector3f ln(-dU,-dV,1);
-    Vector3f n = (TBN * ln).normalized();
+    Vector3f n = normal;
     Vector3f p = point +  n * huv * kn;
+    normal = (TBN * ln).normalized();
 
     Eigen::Vector3f result_color = {0, 0, 0};
     Vector3f view_dir = (eye_pos - p).normalized();
@@ -266,10 +267,10 @@ Eigen::Vector3f displacement_fragment_shader(const fragment_shader_payload& payl
         Vector3f specular(0,0,0);
         Vector3f ambient(0,0,0);
         Vector3f light_dir =  (light.position -p).normalized();
-        
+        Vector3f h = (view_dir + light_dir).normalized(); // half
         for (size_t i = 0; i < 3; i++)
         {
-            Vector3f h = (view_dir + light_dir).normalized(); // half
+            
             float intensity = light.intensity[i]/rr;
             diffsue[i] = kd[i] * intensity * std::max(0.0f,normal.dot(light_dir));
             specular[i] = ks[i] * intensity * std::pow(std::max(0.0f,normal.dot(h)),150);
